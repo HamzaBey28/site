@@ -1,6 +1,6 @@
 /* =================================
 ------------------------------------
-	EndGam - Gaming Magazine Template
+	ProDent - Dentist Template
 	Version: 1.0
  ------------------------------------
  ====================================*/
@@ -22,10 +22,10 @@ $(window).on('load', function() {
 	/*------------------
 		Navigation
 	--------------------*/
-	$('.primary-menu').slicknav({
-		appendTo:'.header-warp',
-		closedSymbol: '<i class="fa fa-angle-down"></i>',
-		openedSymbol: '<i class="fa fa-angle-up"></i>'
+	$('.nav-switch').on('click', function(event) {
+		$(this).toggleClass('active');
+		$('.nav-warp').slideToggle(400);
+		event.preventDefault();
 	});
 
 
@@ -38,46 +38,135 @@ $(window).on('load', function() {
 	});
 
 
-
 	/*------------------
-		Hero Slider
+		Progress Bar
 	--------------------*/
-	$('.hero-slider').owlCarousel({
-		loop: true,
-		nav: true,
-		dots: true,
-		navText: ['', '<img src="img/icons/solid-right-arrow.png">'],
-		mouseDrag: false,
-		animateOut: 'fadeOut',
-		animateIn: 'fadeIn',
-		items: 1,
-		//autoplay: true,
-		autoplayTimeout: 10000,
+	$('.progress-bar-style').each(function() {
+		var progress = $(this).data("progress");
+		var bgcolor = $(this).data("bgcolor");
+		var prog_width = progress + '%';
+		if (progress <= 100) {
+			$(this).append('<div class="bar-inner" style="width:' + prog_width + '; background: '+ bgcolor +';"><span>' + prog_width + '</span></div>');
+		}
+		else {
+			$(this).append('<div class="bar-inner" style="width:100%; background: '+ bgcolor +';"><span>100%</span></div>');
+		}
 	});
 
-	var dot = $('.hero-slider .owl-dot');
-	dot.each(function() {
-		var index = $(this).index() + 1;
-		if(index < 10){
-			$(this).html('0').append(index + '.');
-		}else{
-			$(this).html(index + '.');
+
+
+
+	/*------------------
+		Testimonials
+	--------------------*/
+	$('.testimonials-slider').owlCarousel({
+		loop: true,
+		nav: false,
+		dots: true,
+		margin: 128,
+		center:true,
+		items: 1,
+		mouseDrag: false,
+		animateOut: 'fadeOutRight',
+		animateIn: 'fadeInLeft',
+		autoplay:true
+	});
+
+
+	/*------------------
+		Brands Slider
+	--------------------*/
+	$('.brands-slider').owlCarousel({
+		loop: true,
+		nav: false,
+		dots: false,
+		margin : 40,
+		autoplay: true,
+		responsive : {
+			0 : {
+				items: 1,
+			},
+			480 : {
+				items: 2,
+			},
+			768 : {
+				items: 4,
+			},
+			1200 : {
+				items: 5,
+			}
 		}
 	});
 
 
 
 	/*------------------
-		Video Popup
+		Popular Services
 	--------------------*/
-	$('.video-popup').magnificPopup({
-  		type: 'iframe'
+	$('.popular-services-slider').owlCarousel({
+		loop: true,
+		dots: false,
+		margin : 40,
+		autoplay: true,
+		nav:true,
+		navText:['<i class="fa fa-angle-left"></i>','<i class="fa fa-angle-right"></i>'],
+		responsive : {
+			0 : {
+				items: 1,
+			},
+			768 : {
+				items: 2,
+			},
+			991: {
+				items: 3
+			}
+		}
 	});
 
-	$('#stickySidebar').stickySidebar({
-	    topSpacing: 60,
-	    bottomSpacing: 60
+
+	/*------------------
+		Accordions
+	--------------------*/
+	$('.panel-link').on('click', function (e) {
+		$('.panel-link').removeClass('active');
+		var $this = $(this);
+		if (!$this.hasClass('active')) {
+			$this.addClass('active');
+		}
+		e.preventDefault();
 	});
 
+
+	/*------------------
+		Circle progress
+	--------------------*/
+	$('.circle-progress').each(function() {
+		var cpvalue = $(this).data("cpvalue");
+		var cpcolor = $(this).data("cpcolor");
+		var cptitle = $(this).data("cptitle");
+		var cpid 	= $(this).data("cpid");
+
+		$(this).append('<div class="'+ cpid +' loader-circle"></div><div class="progress-info"><h2>'+ cpvalue +'%</h2><p>'+ cptitle +'</p></div>');
+
+		if (cpvalue < 100) {
+
+			$('.' + cpid).circleProgress({
+				value: '0.' + cpvalue,
+				size: 110,
+				thickness: 7,
+				fill: cpcolor,
+				emptyFill: "rgba(0, 0, 0, 0)"
+			});
+		} else {
+			$('.' + cpid).circleProgress({
+				value: 1,
+				size: 110,
+				thickness: 7,
+				fill: cpcolor,
+				emptyFill: "rgba(0, 0, 0, 0)"
+			});
+		}
+
+	});
 
 })(jQuery);
